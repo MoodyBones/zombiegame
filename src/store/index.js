@@ -8,6 +8,8 @@ export default new Vuex.Store({
     uiState: 'start', // could use a boolean, but this is more flexible
     characterChoices: ['baker', 'mechanic', 'artist'],
     character: '',
+    questionIndex: 0,
+    score: 0,
     questions: [
       {
         question: `What's your dog's name?`,
@@ -53,6 +55,15 @@ export default new Vuex.Store({
     },
     updateUIState(state, uiState) {
       state.uiState = uiState
+    },
+    pickQuestion(state, character) {
+      // if answer was correct, increment score by 10, otherwise decrement by 10
+      character === state.character ? (state.score += 10) : (state.score -= 10)
+
+      // increment question index isn't at the end of the array, then move to the next questiomn
+      if (state.questionIndex < state.questions.length - 1) {
+        state.questionIndex++
+      }
     },
   },
   actions: {},

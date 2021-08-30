@@ -26,7 +26,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['uiState', 'questions', 'characterChoices', 'character']),
+    ...mapState([
+      'uiState',
+      'questions',
+      'characterChoices',
+      'character',
+      'questionIndex',
+      'score',
+    ]),
   },
   methods: {
     pickCharacter() {
@@ -40,6 +47,17 @@ export default {
       // send a new uistate to the store
       // this change it from start to characterChosen
       this.$store.commit('updateUIState', 'characterChosen')
+    },
+    pickQuestion(character) {
+      // console.log(this.character)
+
+      // send the character to the store and update the score
+      // the character we choose matches then the score increases
+      // if not the score decreases
+
+      // Also everytime we pick a question we update the questionIndex
+
+      this.$store.commit('pickQuestion', character)
     },
   },
 }
@@ -132,6 +150,20 @@ export default {
           />
         </g>
       </svg>
+      <!-- Creating a Question Index setup  -->
+      <div class="friendtalk">
+        <!-- grab the first question -->
+        <h3>{{ questions[questionIndex].question }}</h3>
+      </div>
+      <div class="zombietalk">
+        <p v-for="character in characterChoices" :key="character">
+          <!-- we want to out put the answers that matches our character -->
+          <button @click="pickQuestion(character)">
+            <!-- the character is a property on that object-->
+            {{ questions[questionIndex][character] }}
+          </button>
+        </p>
+      </div>
     </section>
   </div>
 </template>
