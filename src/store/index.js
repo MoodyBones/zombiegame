@@ -57,12 +57,18 @@ export default new Vuex.Store({
       state.uiState = uiState
     },
     pickQuestion(state, character) {
-      // if answer was correct, increment score by 10, otherwise decrement by 10
-      character === state.character ? (state.score += 10) : (state.score -= 10)
+      // if answer was correct, increment score, otherwise decrement
+      character === state.character ? (state.score += 13) : (state.score -= 13)
 
       // increment question index isn't at the end of the array, then move to the next questiomn
       if (state.questionIndex < state.questions.length - 1) {
         state.questionIndex++
+      } else {
+        // if at end of array set uiState to won or lost
+        // use Math.sign to stop js from coercing the score
+        Math.sign(state.score) > 0
+          ? (state.uiState = 'won')
+          : (state.uiState = 'lost')
       }
     },
   },

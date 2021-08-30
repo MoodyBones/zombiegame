@@ -65,6 +65,30 @@
 </template>
 
 <script>
+//import gsap
+import gsap from 'gsap'
+
+// import score from state using mapState
+import { mapState } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState(['score']),
+  },
+
+  // watch the score
+  // you can pass in both the new and old value
+  // but here only the newVal is nescessary
+  watch: {
+    score(newVal) {
+      gsap.to('#needle', {
+        duration: 0.3, // 0.2s to 0.3s is a good default range for DOM
+        rotation: newVal,
+        transformOrigin: '50% 87%', // default 0% 0% of top left corner of the box
+      })
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped></style>
