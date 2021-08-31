@@ -3,6 +3,7 @@
 import { mapState } from 'vuex' // allows us to bring in multiple things
 //vimport-export snippet
 import GamestateStart from '@/components/GamestateStart.vue'
+import GamestateFinish from '@/components/GamestateFinish.vue'
 import Artist from '@/components/Artist.vue'
 import Baker from '@/components/Baker.vue'
 import Friend from '@/components/Friend.vue'
@@ -12,6 +13,7 @@ import Zombie from '@/components/Zombie.vue'
 
 export default {
   components: {
+    GamestateFinish,
     GamestateStart,
     Artist,
     Baker,
@@ -60,11 +62,17 @@ export default {
       this.$store.commit('pickQuestion', character)
     },
     shuffle(array) {
+      // could use lodash
+      // Fisher-Yates shuffle algo
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1))
         ;[array[i], array[j]] = [array[j], array[i]]
       }
       return array
+    },
+    reset() {
+      this.characterinput = ''
+      this.$store.commit('resetGame')
     },
   },
 }
@@ -92,7 +100,7 @@ export default {
       <button @click="pickCharacter">Pick you character</button>
     </GamestateStart>
 
-    <section v-else>
+    <section v-else-if="uiState === 'characterChosen'">
       <svg viewBox="0 -180 1628 1180" class="main">
         <defs>
           <clipPath id="bottom-clip">
@@ -172,6 +180,10 @@ export default {
         </p>
       </div>
     </section>
+
+    <GamestateFinish v-else>
+      <button @click="reset">Play again</button>
+    </GamestateFinish>
   </div>
 </template>
 

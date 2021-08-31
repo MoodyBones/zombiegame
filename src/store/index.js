@@ -71,6 +71,12 @@ export default new Vuex.Store({
           : (state.uiState = 'lost')
       }
     },
+    resetGame(state) {
+      state.uiState = 'start'
+      state.character = ''
+      state.questionIndex = 0
+      state.score = 0
+    },
   },
   actions: {},
   modules: {},
